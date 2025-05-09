@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Summarization App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-lg max-w-2xl">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Text Summarization</h1>
+        <form method="POST" action="/" id="summarize-form">
+            <div class="mb-4">
+                <label for="article_text" class="block text-gray-700 font-semibold mb-2">Enter Article Text:</label>
+                <textarea id="article_text" name="article_text" rows="8" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Paste your article here...">{{ article_text | default('') }}</textarea>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition" id="summarize-btn">Summarize</button>
+        </form>
+        <div id="loading" class="hidden mt-4 text-center">
+            <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="text-gray-600">Generating summary...</p>
+        </div>
+        {% if summary %}
+        <div class="mt-6 animate-fade-in">
+            <h2 class="text-xl font-semibold text-gray-800 mb-3">Summary:</h2>
+            <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500 shadow-md">
+                <p class="text-gray-700 text-base leading-relaxed">{{ summary }}</p>
+            </div>
+        </div>
+        {% endif %}
+        {% if error %}
+        <div class="mt-4 text-red-600 text-center">{{ error }}</div>
+        {% endif %}
+    </div>
+    <script>
+        document.getElementById('summarize-form').addEventListener('submit', function() {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('summarize-btn').disabled = true;
+        });
+    </script>
+</body>
+</html>
